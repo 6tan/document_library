@@ -1,0 +1,52 @@
+version: '3.5'
+
+services:
+  postgres-service:
+    container_name: "postgres-service"
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+
+    hostname: pg-host
+    volumes:
+       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres_network
+
+    restart: unless-stopped
+
+  webapp-service:
+      container_name: 'webapp-service'
+      depends_on:
+        - postgres-service
+      environment:
+        PG_PORT: 5432
+        PG_USER: postgres
+        PG_PASSWORD: postgres
+        PG_DATABASE: audio
+        PG_HOST: postgres-service
+
+      build:
+        context: .
+        dockerfile: ./Dockerfile
+      networks:
+        - postgres_network
+      links:
+        - postgres-service:postgres-service
+      volumes:
+        - ./webapp/:/usr/sample-api/webapp/
+      command: "python -u app/app.py"
+      stdin_open: true
+
+      ports:
+        - "9876:9876"
+networks:
+  postgres_network:
+    driver: bridge
+
+volumes:
+    postgres:

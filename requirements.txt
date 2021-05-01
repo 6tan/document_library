@@ -1,0 +1,3 @@
+flask
+fastjsonschema
+psycopg2-binary
