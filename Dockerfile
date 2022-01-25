@@ -1,9 +1,8 @@
-FROM python:3.7-alpine3.11
+FROM python:3.8-alpine3.14
 
 RUN apk update
 RUN pip install --no-cache-dir -U pip
 RUN apk add --virtual .build-deps gcc musl-dev libffi-dev libpq
-RUN apk add postgresql-dev
 RUN apk add build-base
 RUN apk add --no-cache mariadb-dev
 
@@ -17,7 +16,7 @@ RUN apk del py-pip
 RUN rm -rf /.cache/pip
 
 
-COPY ./webapp/ /usr/sample-api/webapp/
-WORKDIR /usr/sample-api/webapp/
+COPY ./webapp/ /usr/DocumentLibrary/webapp/
+WORKDIR /usr/DocumentLibrary/webapp/
 
 EXPOSE 9876

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.8
 # -*- coding: utf-8 -*-
 from utils.utils_constant import Method
-from app.views import AudioGet, AudioCreate, AudioDelete, AudioUpdate
+from . import views
 
 
 def register_url(app, view, url, endpoint, method):
@@ -11,12 +11,11 @@ def register_url(app, view, url, endpoint, method):
 
 
 def register_urls(app):
-    register_url(app=app, view=AudioGet, endpoint='get_audio_type', url='audioFile/<audioFileType>', method=Method.GET)
-    register_url(app=app, view=AudioGet, endpoint='get_audio_file', url='audioFile/<audioFileType>/<audioFileID>',
-                 method=Method.GET)
-    register_url(app=app, view=AudioCreate, endpoint='create_audio_file', url='audioFile/create',
-                 method=Method.POST)
-    register_url(app=app, view=AudioUpdate, endpoint='update_audio_file', url='audioFile/<audioFileType>/<audioFileID>',
+    register_url(app=app, view=views.CreateUser, endpoint='create_user', url='user/create', method=Method.POST)
+    register_url(app=app, view=views.DocumentGet, endpoint='get_documents', url='documents', method=Method.GET)
+    register_url(app=app, view=views.DocumentGet, endpoint='get_document_file', url='document/<documentID>', method=Method.GET)
+    register_url(app=app, view=views.DocumentCreate, endpoint='create_document', url='document/create', method=Method.POST)
+    register_url(app=app, view=views.DocumentUpdate, endpoint='update_document', url='document/<documentID>',
                  method=Method.PUT)
-    register_url(app=app, view=AudioDelete, endpoint='delete_audio_file', url='audioFile/<audioFileType>/<audioFileID>',
+    register_url(app=app, view=views.DocumentDelete, endpoint='delete_document', url='document/<documentID>',
                  method=Method.DELETE)

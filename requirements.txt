@@ -1,3 +1,4 @@
 flask
-fastjsonschema
-psycopg2-binary
+sqlalchemy
+Flask-SQLAlchemy
+sqlite3

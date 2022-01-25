@@ -1,31 +1,36 @@
-CREATE DATABASE audio;
+CREATE DATABASE document;
 \c audio;
 
 BEGIN;
 
-CREATE TABLE song (
+CREATE TABLE tbl_users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    duration INTEGER CHECK (duration > 0),
-    upload_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL -- auto create on insertion
+    access_token uuid default uuid_generate_v4() not null unique, -- unique id assigned to user
+    joined timestamp with time zone not null default current_timestamp NOT NULL -- auto create on insertion
 );
 
-CREATE TABLE podcast (
+CREATE TABLE tbl_document (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    duration INTEGER CHECK (duration > 0),
-    upload_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, -- auto create on insertion
-    host VARCHAR(100) NOT NULL,
-    participants VARCHAR(100) ARRAY[10] CHECK(array_length(participants, 1) <=10)
+    user_id INTEGER,
+    data BYTEA NOT NULL,
+    upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, -- auto create on insertion
+    lock BOOLEAN DEFAULT FALSE,
+    shared_users INT ARRAY[],
+    last_updated
+    CONSTRAINT fk_user_id  FOREIGN KEY(user_id)  REFERENCES tbl_users(id)
 );
 
-CREATE TABLE audiobook (
+CREATE TABLE tbl_history (
     id SERIAL PRIMARY KEY,
-    title VARCHAR(100) NOT NULL,
-    author VARCHAR(100) NOT NULL,
-    narrator VARCHAR(100) NOT NULL,
-    duration INTEGER CHECK (duration > 0),
-    upload_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL -- auto create on insertion
+    document_id VARCHAR(100) NOT NULL,
+    owner INTEGER NOT NULL,
+    editor INTEGER NOT NULL,
+    action VARCHAR(20) NOT NULL,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, -- auto create on insertion
+    CONSTRAINT fk_document_id  FOREIGN KEY(document_id)  REFERENCES tbl_document(id),
+    CONSTRAINT fk_owner_id  FOREIGN KEY(owner)  REFERENCES tbl_users(id),
+    CONSTRAINT fk_editor_id  FOREIGN KEY(editor)  REFERENCES tbl_users(id),
 );
 
 COMMIT;
