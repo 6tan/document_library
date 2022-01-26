@@ -8,8 +8,8 @@ services:
         dockerfile: ./Dockerfile
 
       volumes:
-        - ./webapp/:/usr/DocumentLibrary/webapp/
-      command: "python -u restapp/main.py"
+        - ./src/:/usr/DocumentLibrary/src/
+      command: "python -u app/main.py"
       stdin_open: true
 
       ports:

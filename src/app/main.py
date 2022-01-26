@@ -9,7 +9,7 @@ filename = getframeinfo(currentframe()).filename
 current_module_path = Path(filename).resolve().parent
 ROOT_PATH = Path(current_module_path).parents[1].as_posix()
 module_path = [
-    f'{ROOT_PATH}/webapp/'
+    f'{ROOT_PATH}/src/'
 ]
 
 for index, path in enumerate(module_path):
@@ -19,14 +19,9 @@ from app import url, flask_app
 from db.models import  db
 
 db.create_all()  # loading database
-
-
-def app_run():
-    debug = False
-    flask_app.run('0.0.0.0', 9876, debug)
-
+ 
 
 url.register_urls(flask_app)
 
 if __name__ == '__main__':
-    app_run()
+    flask_app.run('0.0.0.0', 9876)

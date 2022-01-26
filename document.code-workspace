@@ -1,0 +1,35 @@
+{
+    "folders":[
+        {
+            "path":"."
+        }
+    ],
+    "settings":{
+        "python.pythonPath":"${env:PYTHONHOME}",
+        "python.envFile":"${workspaceFolder}\\.env",
+        "terminal.integrated.env.windows":{
+            "PYTHONPATH":"${env:PYTHONHOME};${workspaceFolder};${workspaceFolder}\\src",
+            "cwd":"${workspaceFolder}\\src",
+            "envFile":"${workspaceFolder}\\.env"
+        }
+    },
+    "launch":{
+        "folders":[
+            {
+                "path":"${workspaceFolder}\\src"
+            }
+        ],
+        "envFile":"${workspaceFolder}\\.env",
+        "version":"0.2.0",
+        "configurations":[
+            {
+                "name":"Python: Flask",
+                "type":"python",
+                "request":"launch",
+                "cwd":"${workspaceFolder}\\src",
+                "program": "${workspaceFolder}\\src\\app\\main.py",
+                "envFile":"${workspaceFolder}\\.env"
+            }
+        ]
+    }
+}

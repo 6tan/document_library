@@ -16,7 +16,7 @@ RUN apk del py-pip
 RUN rm -rf /.cache/pip
 
 
-COPY ./webapp/ /usr/DocumentLibrary/webapp/
-WORKDIR /usr/DocumentLibrary/webapp/
+COPY ./src/ /usr/DocumentLibrary/src/
+WORKDIR /usr/DocumentLibrary/src/
 
 EXPOSE 9876
