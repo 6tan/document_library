@@ -299,6 +299,7 @@ paths:
                   - $ref: "#/components/schemas/documentNotExist"
                   - $ref: "#/components/schemas/invalidToken"
                   - $ref: "#/components/schemas/documentUnavailable"
+                  - $ref: "#/components/schemas/cannotDelete"
           
                            
   /document/share:
@@ -407,6 +408,18 @@ components:
         message:
           type: string
           example: Document Unavailable For Requested User
+        type:
+          type: string
+          example: VALIDATION
+
+    cannotDelete:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+          example: Permssion Denied: Shared User cannot delete document
         type:
           type: string
           example: VALIDATION

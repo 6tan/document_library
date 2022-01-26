@@ -178,7 +178,7 @@ class DocumentCreate(ApiBase):
 
     def process_post(self):
         user = User.query.filter_by(token=self.request_headers["token"]).first()
-        document = Document(user_id=user.id,version=1,)
+        document = Document(user_id=user.id)
         db.session.add(document)
         db.session.flush()
         db.session.commit()

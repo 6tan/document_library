@@ -29,12 +29,15 @@ clone the Repository using below command
     `python src/app/main.py`
 
 ## API's
-Please find the swagger Api doc here
+Please find the swagger Api doc here : https://6tan.github.io/document_library/
 
 
 ### Response Status Code
 
     - Success: 200 OK
-    - Invalid Request: 400 BAD REQUEST
+    - Invalid Document Id: 400 BAD REQUEST
+    - Invalid Token: 400 BAD REQUEST
+    - Invalid Credentials: 400 BAD REQUEST
+    - document locked: 423 LOCKED
     - Invalid URL: 404 NOT FOUND
     - Any Exception: 500 INTENAL SERVER ERROR
