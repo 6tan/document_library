@@ -419,7 +419,7 @@ components:
           type: integer
         message:
           type: string
-          example: Permssion Denied: Shared User cannot delete document
+          example: "Permssion Denied: Shared User cannot delete document"
         type:
           type: string
           example: VALIDATION
