@@ -106,7 +106,7 @@ class DocumentGet(ApiBase):
                 document.lock = True # lock if owner downloads document
                 db.session.commit()
             elif document.lock == True:
-                return {}, f"Document with id {document_id} is beign edited by Owner", 400, ValidationTypes.VALIDATION
+                return {}, f"Document with id {document_id} is beign edited by Owner", 423, ValidationTypes.VALIDATION
                 
             self.is_file = True
             response = f"{ROOT_PATH}/src/documents/document_{document_id}.txt"
@@ -251,7 +251,7 @@ class DocumentUpdate(ApiBase):
             db.session.add(history)
             db.session.commit()
         elif document.lock == True:
-            return {}, f"Document with id {document_id} is beign edited by Owner", 400, ValidationTypes.VALIDATION
+            return {}, f"Document with id {document_id} is beign edited by Owner", 423, ValidationTypes.VALIDATION
         else:
             history = History.query.filter_by(user_id=user.id, document_id=document_id, 
                         action='download').order_by(History.last_update_date.desc()).first()

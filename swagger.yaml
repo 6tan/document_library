@@ -1,0 +1,425 @@
+openapi: 3.0.3
+info:
+  title: Document Management API's
+  version: 0.0.1
+  description: .
+servers:
+  - url: "http://localhost:9876/"
+
+tags:
+- name: "User"
+  description: "User managament"
+- name: "Document"
+  description: "Document management APIs"
+
+
+paths:
+
+  /user/create:
+    post:
+      tags:
+        - "User"
+      summary: Create user
+      description: create user for first time or new users
+      requestBody:
+        description: User credentials
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User Created Successfully
+        400:
+          description: Failure operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Email Already Exist
+                  type:
+                   type: string
+                   example: VALIDATION
+                  
+  /user/login/{email}/{password}:
+    get:
+      tags:
+        - "User"
+      summary: "Login to get token"
+      description: ""
+      parameters:
+        - name: email
+          in: path
+          description: email id of user.
+          required: true
+          schema:
+            type: string
+            example: sample@gmail.com
+        - name: password
+          in: path
+          description: password used while creating user.
+          required: true
+          schema:
+            type: string
+            example: sample
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserToken"
+        400:
+          description: Failure operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 
+                  message:
+                    type: string
+                    example: Invalid Credentials
+                  type:
+                   type: string
+                   example: VALIDATION
+                   
+  /document/create:
+    post:
+      tags:
+        - Document
+      summary: "Add a new document to doc library"
+      description: ""
+      parameters:
+        - $ref: "#/components/parameters/token"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Document Saved Successfully with id 2
+  
+  /documents:
+    get:
+      tags:
+      - Document
+      summary: "Lists all documents available for user"
+      description: ""
+      parameters:
+        -  $ref: "#/components/parameters/token"
+      responses:
+        200:
+          description: list og document Id's
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  documents:
+                    type: array
+                    items:
+                      type: integer
+                      example: 
+                        - 1
+                        - 2
+                   
+  
+  /document/{documentID}:
+    get:
+      tags:
+      - Document
+      summary: "Download Document"
+      description: ""
+      parameters:
+        -  $ref: "#/components/parameters/token"
+        - name: documentID
+          in: path
+          description: ID of Document that needs to be downloaded.
+          required: true
+          schema:
+            type: integer
+            example: 1
+
+      responses:
+        200:
+          description: A text file
+          content:
+            application/txt:
+              schema:
+                type: string
+                format: binary
+        423:
+          description: When owner is eiditing, the file is locked for shared user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: null
+                  message:
+                    type: string
+                    example: Document with id 1 is beign edited by Owner
+                  type:
+                    type: string
+                    example: VALIDATION
+                    
+        400:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/documentNotExist"
+                  - $ref: "#/components/schemas/invalidToken"
+                  - $ref: "#/components/schemas/documentUnavailable"
+
+    put:
+      tags:
+      - "Document"
+      summary: "Update an existing document"
+      description: ""
+      parameters:
+        -  $ref: "#/components/parameters/token"
+        - name: documentID
+          in: path
+          description: Document id that needs to be updated.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Document with id 1 Updated Successfully.
+
+        423:
+          description: When owner is eiditing, the file is locked for shared user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: null
+                  message:
+                    type: string
+                    example: Document with id 1 is beign edited by Owner
+                  type:
+                    type: string
+                    example: VALIDATION
+        400:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/documentNotExist"
+                  - $ref: "#/components/schemas/invalidToken"
+                  - $ref: "#/components/schemas/documentUnavailable"
+                    
+    delete:
+      tags:
+      - "Document"
+      summary: "Delete an existing document"
+      description: ""
+      parameters:
+        -  $ref: "#/components/parameters/token"
+        - name: documentID
+          in: path
+          description: ID of Document that needs to be deleted.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Deleted document with ID 1 Successfully.
+        400:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/documentNotExist"
+                  - $ref: "#/components/schemas/invalidToken"
+                  - $ref: "#/components/schemas/documentUnavailable"
+          
+                           
+  /document/share:
+    post:
+      tags:
+       - "Document"
+      summary: "Add a new user for collaborating"
+      description: ""
+      parameters:
+        -  $ref: "#/components/parameters/token"
+        
+      requestBody:
+        description: User Email
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/shareUser"
+              
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Document Shared Successfully.
+        400:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/documentNotExist"
+                  - $ref: "#/components/schemas/invalidToken"
+                  - $ref: "#/components/schemas/documentUnavailable"
+
+
+components:
+
+  schemas:
+    shareUser:
+      type: object
+      properties:
+        email:
+          type: string
+          example: test@gmail.com
+        document_id:
+          type: integer
+          example: 1
+    User:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: user@gmail.com
+        password:
+          type: string
+          example: sample
+
+    UserToken:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9
+    
+    invalidToken:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: Invalid Token Provided
+        type:
+          type: string
+          example: VALIDATION
+    
+    documentNotExist:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: Document with id 5 doesnot exist.
+        type:
+          type: string
+          example: VALIDATION
+                
+    documentUnavailable:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+          example: Document Unavailable For Requested User
+        type:
+          type: string
+          example: VALIDATION
+
+  parameters:
+    token:
+      in: header
+      name: token
+      description: token received after login, required for user validation.
+      required: true
+      schema:
+        type: string
+        example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9
+
+    
+  

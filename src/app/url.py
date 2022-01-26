@@ -12,7 +12,7 @@ def register_url(app, view, url, endpoint, method):
 
 def register_urls(app):
     register_url(app=app, view=views.CreateUser, endpoint='create_user', url='user/create', method=Method.POST)
-    register_url(app=app, view=views.Login, endpoint='login', url='login', method=Method.GET)
+    register_url(app=app, view=views.Login, endpoint='login', url='user/login', method=Method.GET)
     register_url(app=app, view=views.DocumentGet, endpoint='get_documents', url='documents', method=Method.GET)
     register_url(app=app, view=views.DocumentGet, endpoint='get_document_file', url='document/<int:documentID>', method=Method.GET)
     register_url(app=app, view=views.DocumentShare, endpoint='share_document_file', url='document/share', method=Method.POST)
