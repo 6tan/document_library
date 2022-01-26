@@ -19,7 +19,6 @@ class Document(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User')
     lock = db.Column(db.Boolean, nullable=False, default=False)
-    version = db.Column(db.Integer, nullable=False)
     upload_date = db.Column(db.DateTime, nullable=False, default=datetime.now)
     last_update_date = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
