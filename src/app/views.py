@@ -4,7 +4,7 @@ import json
 from inspect import getframeinfo, currentframe
 from pathlib import Path
 from werkzeug.security import check_password_hash, generate_password_hash
-from utils.utils_constant import AudioType, Status, ValidationTypes
+from utils.utils_constant import Status, ValidationTypes
 from .api_base import ApiBase
 from db.models import User, db, Document, DocMap, History
 import uuid

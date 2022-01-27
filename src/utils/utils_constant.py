@@ -20,9 +20,3 @@ class ValidationTypes(object):
     INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR'
     CONFLICT = "CONFLICT"
     URL_ERROR = 'URL_NOT_FOUND'
-
-
-class AudioType(object):
-    SONG = "song"
-    PODCAST = "podcast"
-    AUDIO_BOOK = "audiobook"
