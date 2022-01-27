@@ -15,7 +15,7 @@ tags:
 
 paths:
 
-  /user/create:
+  /api/v1/user/create:
     post:
       tags:
         - "User"
@@ -55,7 +55,7 @@ paths:
                    type: string
                    example: VALIDATION
                   
-  /user/login/{email}/{password}:
+  /api/v1/user/login/{email}/{password}:
     get:
       tags:
         - "User"
@@ -100,7 +100,7 @@ paths:
                    type: string
                    example: VALIDATION
                    
-  /document/create:
+  /api/v1/document/create:
     post:
       tags:
         - Document
@@ -129,7 +129,7 @@ paths:
                     type: string
                     example: Document Saved Successfully with id 2
   
-  /documents:
+  /api/v1/documents:
     get:
       tags:
       - Document
@@ -151,10 +151,9 @@ paths:
                       type: integer
                       example: 
                         - 1
-                        - 2
-                   
+                        - 2               
   
-  /document/{documentID}:
+  /api/v1/document/{documentID}:
     get:
       tags:
       - Document
@@ -300,9 +299,8 @@ paths:
                   - $ref: "#/components/schemas/invalidToken"
                   - $ref: "#/components/schemas/documentUnavailable"
                   - $ref: "#/components/schemas/cannotDelete"
-          
-                           
-  /document/share:
+                                  
+  /api/v1/document/share:
     post:
       tags:
        - "Document"
